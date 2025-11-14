@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Swiftcafe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            min-height: 100vh;
+            color: #000;
+        }
+
+        nav {
+            background-color: #d2b48c;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: bold;
+            color: #4b2e2e;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #4b2e2e;
+            font-weight: bold;
+            transition: 0.3s;
+            padding: 5px 10px;
+        }
+
+        nav ul li a:hover {
+            color: #2c1810;
+            background-color: rgba(75, 46, 46, 0.1);
+            border-radius: 5px;
+        }
+
+        .container {
+            background: rgba(210, 180, 140, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 0 12px rgba(210, 180, 140, 0.8);
+            margin: 120px auto;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4b2e2e;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #4b2e2e;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #4b2e2e;
+            border-radius: 5px;
+            background: #fff;
+            color: #4b2e2e;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2c1810;
+            box-shadow: 0 0 5px #2c1810;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4b2e2e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #2c1810;
+        }
+
+        button:disabled {
+            background-color: #999;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #4b2e2e;
+        }
+
+        .switch a {
+            color: #4b2e2e;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .switch a:hover {
+            color: #2c1810;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #c62828;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+        }
+
+        .message.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">Swiftcafe</div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Login</h2>
+        <div id="message" class="message"></div>
+        <form id="loginForm">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" placeholder="Enter your email" required autocomplete="username">
+
+            <label for="loginPass">Password</label>
+            <input type="password" id="loginPass" placeholder="Enter your password" required
+                autocomplete="current-password">
+
+            <button type="submit" id="loginBtn">Login</button>
+        </form>
+        <p class="switch">Don't have an account? <a href="/register">Register Now</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e)
+        {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPass').value;
+            const loginBtn = document.getElementById('loginBtn');
+
+            if (!email || !password)
+            {
+                showMessage('Email and password required', 'error');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+
+            try
+            {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success)
+                {
+                    showMessage('Login successful! Redirecting...', 'success');
+                    setTimeout(() =>
+                    {
+                        if (data.role === 'admin')
+                        {
+                            window.location.href = '/admin';
+                        } else
+                        {
+                            window.location.href = '/home';
+                        }
+                    }, 1000);
+                } else
+                {
+                    showMessage(data.message || 'Login failed', 'error');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+                }
+            } catch (error)
+            {
+                showMessage('Connection error. Please try again.', 'error');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        });
+
+        function showMessage(text, type)
+        {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type + ' show';
+        }
+    </script>
+
+</body>
+
+</html>

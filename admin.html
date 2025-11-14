@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - SwiftCafe</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #4b2e2e;
+            text-align: left;
+            font-size: 26px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            background: #d2b48c;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4b2e2e;
+        }
+
+        nav .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav .admin-name {
+            font-size: 14px;
+            color: #4b2e2e;
+            font-weight: bold;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            background: #4b2e2e;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        nav a:hover {
+            background: #3a1f1f;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Cards Wrapper */
+        .cards-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            background: #fff8f0;
+            flex: 1;
+            min-width: 180px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* Revenue Cards */
+        .revenue-card {
+            background: #ffe4b5;
+            flex: 1;
+            min-width: 180px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* Hover Effect */
+        .stat-card:hover,
+        .revenue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Card Typography */
+        .stat-card h3,
+        .revenue-card h3 {
+            margin: 0;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: #d2691e;
+        }
+
+        .revenue-card h3 {
+            color: #b35900;
+        }
+
+        .stat-card p,
+        .revenue-card p {
+            margin: 5px 0 0 0;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            color: #4b2e2e;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #d2b48c;
+            color: #4b2e2e;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Lists */
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 6px 0;
+            font-weight: bold;
+            color: #4b2e2e;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .cards-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>   
+        <div class="logo"><strong>Admin Panel</strong></div>
+        <div class="nav-right">
+            <span class="admin-name">Logged in: <b>{{ data.admin_name }}</b></span>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Statistics & Revenue -->
+    <div class="container stats-revenue">
+        <h2>Statistics Analytics</h2>
+        <div class="cards-wrapper">
+            <!-- Stats Cards -->
+            <div class="stat-card">
+                <h3>{{ data.total_users }}</h3>
+                <p>Registered Users</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ data.total_food_orders }}</h3>
+                <p>Total Food Orders</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ data.total_bookings }}</h3>
+                <p>Total Bookings</p>
+            </div>
+            <!-- Revenue Cards -->
+            <div class="revenue-card">
+                <h3>₹{{ data.booking_revenue }}</h3>
+                <p>Booking Revenue</p>
+            </div>
+            <div class="revenue-card">
+                <h3>₹{{ data.food_revenue }}</h3>
+                <p>Food Revenue</p>
+            </div>
+            <div class="revenue-card">
+                <h3>₹{{ data.total_revenue }}</h3>
+                <p>Total Revenue</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Ordered Foods -->
+    <div class="container">
+        <h2>Top Ordered Foods</h2>
+        {% if data.top_foods %}
+        <ul>
+            {% for food in data.top_foods %}
+            <li>{{ food.item_name }} — {{ food.total_quantity }} orders</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No food orders found.</p>
+        {% endif %}
+    </div>
+
+    <!-- Recent Customer Feedbacks -->
+    <div class="container">
+        <h2>Recent Customer Feedbacks</h2>
+        {% if data.feedbacks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Feedback</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fb in data.feedbacks %}
+                <tr>
+                    <td>{{ fb.name }}</td>
+                    <td>{{ fb.email }}</td>
+                    <td>{{ fb.message }}</td>
+                    <td>{{ fb.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No feedback found.</p>
+        {% endif %}
+    </div>
+
+    <!-- All Table Bookings -->
+    <div class="container">
+        <h2>All Table Bookings</h2>
+        {% if bookings %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Guests</th>
+                    <th>Table No</th>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>Status</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in bookings %}
+                <tr>
+                    <td>{{ b.id }}</td>
+                    <td>{{ b.name }}</td>
+                    <td>{{ b.email }}</td>
+                    <td>{{ b.phone }}</td>
+                    <td>{{ b.date }}</td>
+                    <td>{{ b.time }}</td>
+                    <td>{{ b.guests }}</td>
+                    <td>{{ b.table_no }}</td>
+                    <td>{{ b.category }}</td>
+                    <td>{{ b.subcategory }}</td>
+                    <td>{{ b.status }}</td>
+                    <td>{{ b.total_amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No table bookings found.</p>
+        {% endif %}
+    </div>
+
+    <!-- All Food Orders -->
+    <div class="container">
+        <h2>All Food Orders</h2>
+        {% if food_orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Booking ID</th>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                    <th>Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in food_orders %}
+                <tr>
+                    <td>{{ f.id }}</td>
+                    <td>{{ f.booking_id }}</td>
+                    <td>{{ f.customer_name }}</td>
+                    <td>{{ f.customer_email }}</td>
+                    <td>{{ f.item_name }}</td>
+                    <td>{{ f.quantity }}</td>
+                    <td>{{ f.item_price }}</td>
+                    <td>{{ 'Yes' if f.food_paid else 'No' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No food orders found.</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

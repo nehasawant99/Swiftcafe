@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menu - SwiftCafe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #fffaf5;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background: #d2b48c;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: #4b2e2e;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #4b2e2e;
+            font-weight: bold;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #2c1810;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            color: #4b2e2e;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .category-filter {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .category-filter select {
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: #fff8f0;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .menu-card h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #4b2e2e;
+            margin-bottom: 8px;
+        }
+
+        .menu-card p {
+            font-size: 14px;
+            color: #4b2e2e;
+            margin-bottom: 12px;
+        }
+
+        .menu-card button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #4b2e2e;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-card button:hover {
+            background: #2c1810;
+        }
+
+        .checkout-btn {
+            display: block;
+            margin: 30px auto 0;
+            padding: 12px 25px;
+            font-size: 16px;
+            background: #d2691e;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .checkout-btn:hover {
+            background: #a65b15;
+        }
+
+        .order-summary {
+            margin-top: 40px;
+            background: #fff8f0;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .order-summary h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #4b2e2e;
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #d2b48c;
+        }
+
+        .order-item button {
+            background: #a12b2b;
+            padding: 5px 10px;
+            border-radius: 6px;
+            color: white;
+            border: none;
+        }
+
+        .order-item button:hover {
+            background: #7f1f1f;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">SwiftCafe</div>
+        <div>
+            <a href="/home">Home</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>SwiftCafe Menu</h1>
+
+        <!-- Category Dropdown -->
+        <div class="category-filter">
+            <label for="category">Filter by Category:</label>
+            <select id="category" onchange="filterCategory()">
+                <option value="all">All</option>
+                {% for category in menu_items.keys() %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu-grid" id="menuGrid">
+            {% for category, items in menu_items.items() %}
+            {% for item in items %}
+            <div class="menu-card" data-category="{{ category }}">
+                <img src="{{ url_for('static', filename='images/menu/' ~ item.image) }}" alt="{{ item.name }}">
+                <h3>{{ item.name }}</h3>
+                <p>Price: ₹{{ item.price }}</p>
+                <form method="POST" action="{{ url_for('menu') }}">
+                    <input type="hidden" name="item_name" value="{{ item.name }}">
+                    <input type="hidden" name="item_price" value="{{ item.price }}">
+                    <button type="submit" name="action" value="add">Add to Order</button>
+                </form>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h2>Your Order</h2>
+            {% if orders %}
+            {% set ns = namespace(total=0) %}
+            {% for order in orders %}
+            {% set item_total = order['quantity'] * order['item_price'] %}
+            {% set ns.total = ns.total + item_total %}
+            <div class="order-item">
+                <span>{{ order['item_name'] }} (x{{ order['quantity'] }}) - ₹{{ item_total }}</span>
+                <form method="POST" action="{{ url_for('menu') }}" style="display:flex; align-items:center; gap:5px;">
+                    <input type="hidden" name="order_id" value="{{ order['id'] }}">
+                    <button type="submit" name="action" value="decrease">-</button>
+                    <span>{{ order['quantity'] }}</span>
+                    <button type="submit" name="action" value="increase">+</button>
+                    <button type="submit" name="action" value="delete"
+                        style="margin-left:10px; background:#a12b2b;">Delete</button>
+                </form>
+            </div>
+            {% endfor %}
+            <p><strong>Total: ₹{{ ns.total }}</strong></p>
+            {% else %}
+            <p>No items in order yet.</p>
+            {% endif %}
+        </div>
+
+        <a href="{{ url_for('food_payment') }}" class="checkout-btn">Proceed to Payment</a>
+    </div>
+
+    <script>
+        function filterCategory()
+        {
+            let selected = document.getElementById("category").value;
+            let cards = document.querySelectorAll(".menu-card");
+            cards.forEach(card =>
+            {
+                if (selected === "all" || card.dataset.category === selected)
+                {
+                    card.style.display = "block";
+                } else
+                {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

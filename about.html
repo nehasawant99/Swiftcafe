@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - SwiftPay Café</title>
+    <style>
+        /* Reset and global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f0eb;
+            color: #3a2e2a;
+            line-height: 1.6;
+            background-image: url('{{ url_for("static", filename="images/cafe-bg.jpg") }}');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            background-color: #d2b48c;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .about-section {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .about-section h2 {
+            color: #8b5e3c;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-section p {
+            font-size: 1.1rem;
+            color: #5a4031;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .team {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .team-member {
+            background-color: #f5f0eb;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1 1 200px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .team-member h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #8b5e3c;
+        }
+
+        .team-member p {
+            font-size: 0.95rem;
+            color: #5a4031;
+        }
+
+        footer {
+            background-color: #d2b48c;
+            text-align: center;
+            padding: 15px 0;
+            color: #ffffff;
+            margin-top: 50px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #8b5e3c;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #a67853;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>SwiftPay Café</h1>
+        <nav>
+            <a href="{{ url_for('menu') }}">Menu</a>
+            <a href="{{ url_for('home') }}">Home</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+
+        <div class="about-section">
+            <h2>About Us</h2>
+            <p>Welcome to SwiftPay Café, your cozy corner in the city where good vibes, great coffee, and delicious
+                treats come together. We are committed to providing a unique café experience where every customer feels
+                at home.</p>
+            <p>Our café focuses on serving fresh, high-quality ingredients, creating specialty drinks, and offering a
+                comfortable space for work, meetings, or casual hangouts with friends and family.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Meet Our Team</h2>
+            <div class="team">
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/barista.jpg') }}" alt="Barista">
+                    <h3>Emma Carter</h3>
+                    <p>Head Barista – Crafting every cup with passion and precision.</p>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/manager.jpg') }}" alt="Manager">
+                    <h3>James Miller</h3>
+                    <p>Café Manager – Ensuring a delightful experience for every guest.</p>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/chef.jpg') }}" alt="Chef">
+                    <h3>Leonardo Rossi</h3>
+                    <p>Chef – Creating mouth-watering treats to complement your coffee.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 SwiftPay Café. All rights reserved.
+    </footer>
+</body>
+
+</html>

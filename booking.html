@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftCafe - Book Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fffaf5;
+            margin: 0;
+            padding: 0;
+            color: #4b2e2e;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #d2b48c;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #4b2e2e;
+        }
+
+        nav a {
+            color: #4b2e2e;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #2c1810;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 25px;
+            font-size: 28px;
+            color: #4b2e2e;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4b2e2e;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #2c1810;
+        }
+
+        .message {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">SwiftCafe</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Book Your Table</h1>
+
+        {% if message %}
+        <div class="message">{{ message }}</div>
+        {% endif %}
+
+        <form action="/booking" method="POST">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="time">Select Time Slot</label>
+            <select id="time" name="time" required>
+                <option value="">-- Select Time Slot --</option>
+                {% for slot in slots %}
+                <option value="{{ slot }}">{{ slot }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="table_no">Select Table</label>
+            <select id="table_no" name="table_no" required>
+                <option value="">-- Select Table --</option>
+                {% for table in tables %}
+                <option value="{{ table }}">Table {{ table }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="guests">Number of Guests</label>
+            <select id="guests" name="guests" required>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="business">Business</option>
+                <option value="family">Family</option>
+                <option value="friends">Friends</option>
+            </select>
+
+            <label for="subcategory">Subcategory</label>
+            <select id="subcategory" name="subcategory" required>
+                <option value="meeting">Meeting</option>
+                <option value="board_game">Board Games</option>
+                <option value="study">Study/Work Session</option>
+                <option value="party">Party</option>
+                <option value="lunch">Lunch</option>
+                <option value="catchup">Friends Catchup</option>
+                <option value="birthday">Birthday Celebration</option>
+                <option value="anniversary">Anniversary</option>
+                <option value="coffee">Coffee Meet</option>
+                <option value="other">Other</option>
+            </select>
+
+            <button type="submit">Confirm Booking</button>
+        </form>
+    </div>
+</body>
+
+</html>

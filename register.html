@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Swiftcafe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        nav {
+            background-color: #d2b48c;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: bold;
+            color: #4b2e2e;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #4b2e2e;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #2c1810;
+        }
+
+        .container {
+            background: rgba(210, 180, 140, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 0 12px rgba(210, 180, 140, 0.8);
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4b2e2e;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #4b2e2e;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #4b2e2e;
+            border-radius: 5px;
+            background: #fff;
+            color: #4b2e2e;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2c1810;
+            box-shadow: 0 0 5px #2c1810;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4b2e2e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #2c1810;
+        }
+
+        button:disabled {
+            background-color: #999;
+            cursor: not-allowed;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #4b2e2e;
+            cursor: pointer;
+        }
+
+        .switch a {
+            color: #4b2e2e;
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #c62828;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Swiftcafe</div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Register</h2>
+        <div id="message" class="message"></div>
+        <form id="registerForm">
+
+            <label for="regUsername">Username</label>
+            <input type="text" id="regUsername" placeholder="Enter username" required pattern="^[A-Za-z0-9_]{3,}$"
+                title="Username must be at least 3 characters, letters/numbers only">
+
+            <label for="regName">Full Name</label>
+            <input type="text" id="regName" placeholder="John Doe" required pattern="^[A-Za-z ]{3,}$"
+                title="Name must contain only letters and spaces (min 3 characters)">
+
+            <label for="regEmail">Email</label>
+            <input type="email" id="regEmail" placeholder="john@example.com" required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Enter a valid email address">
+
+            <label for="regPhone">Phone</label>
+            <input type="tel" id="regPhone" placeholder="9876543210" required pattern="^[0-9]{10}$"
+                title="Enter a 10 digit phone number">
+
+            <label for="regRole">Select Role</label>
+            <select id="regRole" required>
+                <option value="customer">Customer</option>
+                <option value="admin">Admin</option>
+            </select>
+
+            <label for="regPass">Password</label>
+            <input type="password" id="regPass" placeholder="Create a password" required minlength="6"
+                title="Password must be at least 6 characters">
+
+            <label for="regConfirmPass">Confirm Password</label>
+            <input type="password" id="regConfirmPass" placeholder="Confirm password" required>
+
+            <button type="submit" id="registerBtn">Register</button>
+        </form>
+        <p class="switch">Already have an account? <a href="/login">Login here</a></p>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function (e)
+        {
+            e.preventDefault();
+
+            const username = document.getElementById('regUsername').value.trim();
+            const fullName = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const role = document.getElementById('regRole').value;
+            const password = document.getElementById('regPass').value;
+            const confirmPass = document.getElementById('regConfirmPass').value;
+            const registerBtn = document.getElementById('registerBtn');
+
+            // Validation
+            if (password !== confirmPass)
+            {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'Registering...';
+
+            try
+            {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        full_name: fullName,
+                        email: email,
+                        phone: phone,
+                        role: role,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success)
+                {
+                    showMessage('Registration successful! Redirecting to login...', 'success');
+                    setTimeout(() =>
+                    {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else
+                {
+                    showMessage(data.message || 'Registration failed', 'error');
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = 'Register';
+                }
+            } catch (error)
+            {
+                showMessage('Connection error. Please try again.', 'error');
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Register';
+            }
+        });
+
+        function showMessage(text, type)
+        {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>
